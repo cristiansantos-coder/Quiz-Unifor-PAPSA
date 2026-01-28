@@ -1226,8 +1226,6 @@
     const resultPlayerMatricula = document.getElementById('resultPlayerMatricula');
     const resultDateTime = document.getElementById('resultDateTime');
     const saveStatus = document.getElementById('saveStatus');
-    const savedResultsSection = document.getElementById('savedResultsSection');
-    const savedResultsList = document.getElementById('savedResultsList');
 
     // Função para selecionar 5 questões aleatórias - CORRIGIDA
     function selectRandomQuestions() {
@@ -1421,13 +1419,20 @@
         });
     }
 
-    // Salvar resultados automaticamente (mantido igual)
+    // Salvar resultados automaticamente (MELHORADA)
     function saveQuizResults(autoSave = false) {
         const resultData = {
             id: Date.now(),
             nome: playerName,
             matricula: playerMatricula,
-            data: new Date().toLocaleString('pt-BR'),
+            data: new Date().toLocaleString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            }),
             pontuacao: score,
             totalQuestoes: currentQuestions.length,
             percentual: Math.round((score / currentQuestions.length) * 100),
@@ -1435,7 +1440,19 @@
             detalhes: gameResults
         };
 
+        // Garantir que savedResults seja um array
+        if (!Array.isArray(savedResults)) {
+            savedResults = [];
+        }
+        
+        // Adicionar no início da lista
         savedResults.unshift(resultData);
+        
+        // Limitar a 100 resultados para não sobrecarregar o localStorage
+        if (savedResults.length > 100) {
+            savedResults = savedResults.slice(0, 100);
+        }
+        
         localStorage.setItem('uniforQuizResults', JSON.stringify(savedResults));
         
         if (!autoSave) {
@@ -1443,7 +1460,7 @@
         }
     }
 
-    // Exportar dados para CSV (mantido igual)
+    // Exportar dados para CSV (MELHORADA)
     function exportQuizResults() {
         const results = JSON.parse(localStorage.getItem('uniforQuizResults')) || [];
         
@@ -1452,26 +1469,38 @@
             return;
         }
         
-        let csv = 'Nome,Matrícula,Data,Pontuação,Total,Percentual,Ganhou Brinde\n';
+        // Usar ponto e vírgula como separador (mais comum no Excel BR)
+        let csv = 'Nome;Matrícula;Data;Pontuação;Total;Percentual;Ganhou Brinde\n';
         
         results.forEach(result => {
-            csv += `"${result.nome}","${result.matricula}","${result.data}",${result.pontuacao},${result.totalQuestoes},${result.percentual}%,${result.ganhouBrinde ? 'Sim' : 'Não'}\n`;
+            // Limpar caracteres problemáticos
+            const cleanName = result.nome ? result.nome.replace(/"/g, "'").replace(/;/g, ",") : "";
+            const cleanMatricula = result.matricula ? result.matricula.replace(/"/g, "'").replace(/;/g, ",") : "";
+            const cleanData = result.data ? result.data.replace(/"/g, "'") : "";
+            
+            csv += `"${cleanName}";"${cleanMatricula}";"${cleanData}";${result.pontuacao || 0};${result.totalQuestoes || 5};${result.percentual || 0}%;${result.ganhouBrinde ? 'Sim' : 'Não'}\n`;
         });
         
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        // Adicionar BOM (Byte Order Mark) para UTF-8 no Excel
+        const BOM = "\uFEFF";
+        const blob = new Blob([BOM + csv], { type: 'text/csv;charset=utf-8;' });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `resultados-quiz-unifor-${new Date().toISOString().split('T')[0]}.csv`;
+        
+        const now = new Date();
+        const dateStr = now.toISOString().split('T')[0];
+        a.download = `meus-resultados-quiz-unifor-${dateStr}.csv`;
+        
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
         
-        alert(`Exportados ${results.length} resultados com sucesso!`);
+        alert(`Seus resultados foram exportados! ${results.length} registros.`);
     }
 
-    // Gerar relatório completo com todos os resultados (mantido igual)
+    // Gerar relatório completo com todos os resultados (MELHORADA)
     function generateCompleteReport() {
         const results = JSON.parse(localStorage.getItem('uniforQuizResults')) || [];
         
@@ -1480,32 +1509,58 @@
             return;
         }
         
-        // Cabeçalho mais detalhado
-        let csv = 'ID,Nome,Matrícula,Data/Hora,Pontuação,Total Questões,Percentual,Ganhou Brinde,Detalhes das Questões\n';
+        // Cabeçalho mais detalhado e organizado
+        let csv = 'ID;Nome;Matrícula;Data/Hora;Pontuação;Total Questões;Percentual;Ganhou Brinde;Detalhes das Questões\n';
         
         results.forEach(result => {
-            // Resumo das questões
-            let detalhes = '';
+            // Limpar caracteres problemáticos para CSV
+            const cleanName = result.nome ? result.nome.replace(/"/g, "'").replace(/;/g, ",") : "";
+            const cleanMatricula = result.matricula ? result.matricula.replace(/"/g, "'").replace(/;/g, ",") : "";
+            const cleanData = result.data ? result.data.replace(/"/g, "'") : "";
+            
+            // Resumo das questões com formatação melhor
+            let detalhes = "";
             if (result.detalhes && result.detalhes.length > 0) {
                 detalhes = result.detalhes.map((q, i) => 
-                    `Q${i+1}:${q.isCorrect ? 'Certo' : 'Errado'}`
-                ).join('; ');
+                    `Q${i+1}: ${q.isCorrect ? '✓' : '✗'}`
+                ).join(" | ");
             }
             
-            csv += `${result.id},"${result.nome}","${result.matricula}","${result.data}",${result.pontuacao},${result.totalQuestoes},${result.percentual}%,${result.ganhouBrinde ? 'Sim' : 'Não'},"${detalhes}"\n`;
+            // Limpar detalhes para evitar problemas no CSV
+            detalhes = detalhes.replace(/"/g, "'").replace(/\n/g, " ");
+            
+            // Usar ponto e vírgula como separador (mais comum no Excel BR)
+            csv += `${result.id || ""};"${cleanName}";"${cleanMatricula}";"${cleanData}";${result.pontuacao || 0};${result.totalQuestoes || 5};${result.percentual || 0}%;${result.ganhouBrinde ? 'Sim' : 'Não'};"${detalhes}"\n`;
         });
         
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        // Adicionar BOM (Byte Order Mark) para UTF-8 no Excel
+        const BOM = "\uFEFF";
+        const blob = new Blob([BOM + csv], { type: 'text/csv;charset=utf-8;' });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `relatorio-completo-quiz-unifor-${new Date().toISOString().split('T')[0]}.csv`;
+        
+        // Nome do arquivo com data atual
+        const now = new Date();
+        const dateStr = now.toISOString().split('T')[0];
+        const timeStr = now.toTimeString().split(' ')[0].replace(/:/g, '-');
+        a.download = `relatorio-quiz-unifor-${dateStr}_${timeStr}.csv`;
+        
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
         
-        alert(`Relatório gerado com ${results.length} resultados!`);
+        alert(`Relatório gerado com sucesso! ${results.length} resultados exportados.`);
+    }
+
+    // Função para limpar todos os resultados
+    function clearAllResults() {
+        if (confirm('Tem certeza que deseja apagar TODOS os resultados salvos? Esta ação não pode ser desfeita.')) {
+            localStorage.removeItem('uniforQuizResults');
+            savedResults = [];
+            alert('Todos os resultados foram apagados!');
+        }
     }
 
     // Reiniciar o quiz (mantido igual)
@@ -1517,6 +1572,21 @@
         welcomeScreen.classList.add('active');
         resultScreen.classList.remove('active');
         questionScreen.classList.remove('active');
+    }
+
+    // Adicionar botão de limpar resultados na tela de resultados
+    function addClearResultsButton() {
+        // Criar botão de limpar resultados
+        const clearResultsBtn = document.createElement('button');
+        clearResultsBtn.className = 'btn btn-secondary';
+        clearResultsBtn.innerHTML = '🗑️ Limpar Resultados';
+        clearResultsBtn.onclick = clearAllResults;
+        
+        // Adicionar à tela de resultados
+        const controlsDiv = document.querySelector('.result-screen .controls');
+        if (controlsDiv) {
+            controlsDiv.appendChild(clearResultsBtn);
+        }
     }
 
     // Event Listeners (mantido igual)
@@ -1545,8 +1615,10 @@
         const results = JSON.parse(localStorage.getItem('uniforQuizResults')) || [];
         console.log(`Quiz UNIFOR carregado com ${questions.length} questões disponíveis.`);
         console.log(`${results.length} resultados salvos encontrados.`);
+        
+        // Adicionar botão de limpar resultados após carregar
+        addClearResultsButton();
     });
   </script>
 </body>
 </html>
-
