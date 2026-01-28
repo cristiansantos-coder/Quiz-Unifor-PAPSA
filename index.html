@@ -795,12 +795,6 @@
               📥 Exportar Meus Resultados
             </button>
           </div>
-          
-          <!-- Área para exibir resultados salvos -->
-          <div id="savedResultsSection" style="display: none; margin-top: 30px;">
-            <h3>📊 Histórico de Tentativas</h3>
-            <div id="savedResultsList"></div>
-          </div>
         </div>
       </div>
     </div>
@@ -820,7 +814,7 @@
   </div>
 
   <script>
-    // Banco de dados de questões da UNIFOR
+    // Banco de dados de questões da UNIFOR - COM NOVAS PERGUNTAS
     const questions = [
         {
             question: "A UNIFOR é uma instituição de ensino superior localizada em Fortaleza?",
@@ -1121,6 +1115,133 @@
             options: ["Apenas aulas", "Ensino, vivência e formação integral", "Atividades online apenas", "Avaliações contínuas"],
             correct: 1,
             section: "Reflexão Acadêmica"
+        },
+        // NOVAS PERGUNTAS ADICIONADAS
+        {
+            question: "Onde o aluno costuma consultar notas e frequência das disciplinas?",
+            options: ["Biblioteca", "Portal do Aluno", "Secretaria presencial", "Aplicativo bancário"],
+            correct: 1,
+            section: "Informações Acadêmicas"
+        },
+        {
+            question: "O que acontece se o aluno ultrapassar o limite de faltas permitido?",
+            options: ["Recebe advertência automática", "Precisa refazer a matrícula", "Pode ser reprovado por falta", "Tem desconto na mensalidade"],
+            correct: 2,
+            section: "Regras Acadêmicas"
+        },
+        {
+            question: "Qual setor costuma atender demandas acadêmicas e financeiras dos alunos?",
+            options: ["Coordenação de curso", "Biblioteca", "Ponto de Atendimento ao Aluno (PAPSA)", "Diretoria"],
+            correct: 2,
+            section: "Atendimento ao Aluno"
+        },
+        {
+            question: "Onde o aluno pode consultar o calendário acadêmico?",
+            options: ["No AVA ou site institucional", "Apenas na coordenação", "Somente presencialmente", "Apenas por e-mail"],
+            correct: 0,
+            section: "Informações Acadêmicas"
+        },
+        {
+            question: "O que normalmente compõe a avaliação de uma disciplina?",
+            options: ["Apenas prova final", "Provas, trabalhos e atividades", "Somente presença", "Apenas participação em sala"],
+            correct: 1,
+            section: "Avaliação Acadêmica"
+        },
+        {
+            question: "Qual é a função da Biblioteca Central da UNIFOR?",
+            options: ["Apenas empréstimo de livros", "Apoio ao ensino, pesquisa e estudo", "Aplicar provas", "Controlar frequência"],
+            correct: 1,
+            section: "Estrutura"
+        },
+        {
+            question: "O aluno pode acessar a biblioteca mesmo sem pegar livros?",
+            options: ["Não", "Apenas com autorização", "Sim, para estudo e pesquisa", "Somente alunos bolsistas"],
+            correct: 2,
+            section: "Estrutura"
+        },
+        {
+            question: "Onde o aluno normalmente acompanha avisos oficiais da universidade?",
+            options: ["Redes sociais pessoais", "AVA, e-mail institucional ou portal", "Apenas murais físicos", "Grupos informais"],
+            correct: 1,
+            section: "Comunicação"
+        },
+        {
+            question: "O e-mail institucional do aluno serve principalmente para:",
+            options: ["Uso pessoal", "Comunicação acadêmica oficial", "Cadastro em redes sociais", "Pagamentos"],
+            correct: 1,
+            section: "Comunicação"
+        },
+        {
+            question: "O aluno pode cursar disciplinas em outros turnos?",
+            options: ["Nunca", "Apenas com autorização, conforme disponibilidade", "Somente no último semestre", "Apenas online"],
+            correct: 1,
+            section: "Matrícula"
+        },
+        {
+            question: "O que significa carga horária de uma disciplina?",
+            options: ["Número de provas", "Quantidade de horas de aula", "Duração do curso", "Horas de estudo em casa"],
+            correct: 1,
+            section: "Planejamento Acadêmico"
+        },
+        {
+            question: "Qual é a importância do regulamento acadêmico?",
+            options: ["Apenas informativo", "Define direitos e deveres do aluno", "Serve apenas para professores", "Não tem impacto prático"],
+            correct: 1,
+            section: "Regras Acadêmicas"
+        },
+        {
+            question: "O aluno pode usar a estrutura do campus fora do horário de aula?",
+            options: ["Não", "Apenas com autorização especial", "Sim, conforme funcionamento dos setores", "Somente finais de semana"],
+            correct: 2,
+            section: "Uso da Estrutura"
+        },
+        {
+            question: "Qual é a função das atividades práticas?",
+            options: ["Substituir provas", "Aplicar teoria na prática", "Reduzir carga horária", "Cancelar aulas teóricas"],
+            correct: 1,
+            section: "Metodologia de Ensino"
+        },
+        {
+            question: "O que é uma atividade de extensão?",
+            options: ["Aula regular", "Projeto que integra universidade e comunidade", "Avaliação obrigatória", "Estágio interno"],
+            correct: 1,
+            section: "Extensão Universitária"
+        },
+        {
+            question: "O aluno ingressante deve acompanhar:",
+            options: ["Apenas as aulas", "Comunicados acadêmicos e prazos", "Apenas provas", "Apenas pagamentos"],
+            correct: 1,
+            section: "Orientação Acadêmica"
+        },
+        {
+            question: "O aluno pode participar de eventos acadêmicos?",
+            options: ["Não", "Sim, e muitos contam como atividade complementar", "Apenas professores", "Apenas formandos"],
+            correct: 1,
+            section: "Participação"
+        },
+        {
+            question: "Qual atitude ajuda no bom desempenho acadêmico?",
+            options: ["Estudar apenas antes da prova", "Acompanhar aulas e prazos", "Faltar aulas", "Ignorar comunicados"],
+            correct: 1,
+            section: "Desempenho Acadêmico"
+        },
+        {
+            question: "O que o aluno deve fazer em caso de dúvidas acadêmicas?",
+            options: ["Esperar resolver sozinho", "Buscar os canais institucionais", "Abandonar a disciplina", "Trocar de curso"],
+            correct: 1,
+            section: "Apoio Acadêmico"
+        },
+        {
+            question: "O que significa ser um aluno ativo?",
+            options: ["Apenas estar matriculado", "Participar das atividades acadêmicas", "Só pagar mensalidade", "Apenas assistir aulas"],
+            correct: 1,
+            section: "Participação"
+        },
+        {
+            question: "Qual é o papel do aluno na sua formação?",
+            options: ["Passivo", "Protagonista do próprio aprendizado", "Apenas obedecer regras", "Depender apenas do professor"],
+            correct: 1,
+            section: "Formação Acadêmica"
         }
     ];
 
@@ -1341,7 +1462,6 @@
         // SALVAR RESULTADO AUTOMATICAMENTE
         saveQuizResults(true);
         showQuestionReview();
-        showSavedResults();
     }
 
     // Mostrar revisão das questões (mantido igual)
@@ -1381,7 +1501,6 @@
         if (!autoSave) {
             alert('Resultado salvo com sucesso!');
         }
-        showSavedResults();
     }
 
     // Exportar dados para CSV (mantido igual)
@@ -1447,37 +1566,6 @@
         window.URL.revokeObjectURL(url);
         
         alert(`Relatório gerado com ${results.length} resultados!`);
-    }
-
-    // Mostrar resultados salvos (mantido igual)
-    function showSavedResults() {
-        // Filtrar apenas os resultados do jogador atual
-        const playerResults = savedResults.filter(result => 
-            result.matricula === playerMatricula
-        );
-        
-        if (playerResults.length > 0) {
-            savedResultsSection.style.display = 'block';
-            savedResultsList.innerHTML = '';
-            
-            playerResults.slice(0, 5).forEach(result => {
-                const resultItem = document.createElement('div');
-                resultItem.className = 'review-item';
-                resultItem.style.marginBottom = '10px';
-                resultItem.innerHTML = `
-                    <p><strong>${result.nome}</strong></p>
-                    <p>Pontuação: ${result.pontuacao}/${result.totalQuestoes} (${result.percentual}%)</p>
-                    <p>Data: ${result.data} ${result.ganhouBrinde ? '🎁' : ''}</p>
-                `;
-                savedResultsList.appendChild(resultItem);
-            });
-            
-            if (playerResults.length > 5) {
-                const moreItem = document.createElement('div');
-                moreItem.innerHTML = `<p><em>... e mais ${playerResults.length - 5} tentativas anteriores</em></p>`;
-                savedResultsList.appendChild(moreItem);
-            }
-        }
     }
 
     // Reiniciar o quiz (mantido igual)
