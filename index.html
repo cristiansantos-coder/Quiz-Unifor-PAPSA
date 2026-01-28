@@ -820,7 +820,7 @@
   </div>
 
   <script>
-    // Banco de dados de questões da UNIFOR (mantido igual)
+    // Banco de dados de questões da UNIFOR
     const questions = [
         {
             question: "A UNIFOR é uma instituição de ensino superior localizada em Fortaleza?",
@@ -828,7 +828,294 @@
             correct: 0,
             section: "Conhecimento Geral"
         },
-        // ... (todas as outras questões permanecem iguais)
+        {
+            question: "A UNIFOR oferece cursos de graduação?",
+            options: ["Sim", "Não"],
+            correct: 0,
+            section: "Conhecimento Geral"
+        },
+        {
+            question: "A UNIFOR possui um campus único e integrado?",
+            options: ["Sim", "Não"],
+            correct: 0,
+            section: "Conhecimento Geral"
+        },
+        {
+            question: "Os alunos da UNIFOR têm acesso a biblioteca no campus?",
+            options: ["Sim", "Não"],
+            correct: 0,
+            section: "Conhecimento Geral"
+        },
+        {
+            question: "A UNIFOR oferece cursos presenciais?",
+            options: ["Sim", "Não"],
+            correct: 0,
+            section: "Conhecimento Geral"
+        },
+        {
+            question: "A UNIFOR também oferece cursos a distância (EAD)?",
+            options: ["Sim", "Não"],
+            correct: 0,
+            section: "Conhecimento Geral"
+        },
+        {
+            question: "A UNIFOR possui cursos em diferentes áreas do conhecimento?",
+            options: ["Sim", "Não"],
+            correct: 0,
+            section: "Conhecimento Geral"
+        },
+        {
+            question: "A UNIFOR promove atividades acadêmicas além das aulas?",
+            options: ["Sim", "Não"],
+            correct: 0,
+            section: "Conhecimento Geral"
+        },
+        {
+            question: "A UNIFOR é reconhecida pelo Ministério da Educação (MEC)?",
+            options: ["Sim", "Não"],
+            correct: 0,
+            section: "Conhecimento Geral"
+        },
+        {
+            question: "Estudar na UNIFOR significa estar vinculado a uma universidade privada?",
+            options: ["Sim", "Não"],
+            correct: 0,
+            section: "Conhecimento Geral"
+        },
+        {
+            question: "Onde o aluno acessa informações sobre disciplinas e notas?",
+            options: ["Redes sociais", "Sistema acadêmico", "Biblioteca", "Coordenação apenas"],
+            correct: 1,
+            section: "Rotina do Aluno"
+        },
+        {
+            question: "O calendário acadêmico serve para:",
+            options: ["Divulgar eventos esportivos", "Organizar datas do semestre", "Informar apenas feriados", "Controlar frequência"],
+            correct: 1,
+            section: "Rotina do Aluno"
+        },
+        {
+            question: "O aluno pode solicitar documentos acadêmicos de forma digital?",
+            options: ["Sim", "Não"],
+            correct: 0,
+            section: "Rotina do Aluno"
+        },
+        {
+            question: "A biblioteca da UNIFOR oferece recursos:",
+            options: ["Apenas físicos", "Apenas digitais", "Físicos e digitais", "Apenas para professores"],
+            correct: 2,
+            section: "Rotina do Aluno"
+        },
+        {
+            question: "O aplicativo institucional da UNIFOR permite ao aluno:",
+            options: ["Jogar", "Consultar informações acadêmicas", "Criar disciplinas", "Cancelar cursos automaticamente"],
+            correct: 1,
+            section: "Rotina do Aluno"
+        },
+        {
+            question: "A UNIFOR oferece atendimento acadêmico por canais digitais?",
+            options: ["Sim", "Não"],
+            correct: 0,
+            section: "Rotina do Aluno"
+        },
+        {
+            question: "Os alunos podem participar de projetos acadêmicos e institucionais?",
+            options: ["Sim", "Não"],
+            correct: 0,
+            section: "Rotina do Aluno"
+        },
+        {
+            question: "A UNIFOR realiza eventos acadêmicos durante o semestre?",
+            options: ["Sim", "Não"],
+            correct: 0,
+            section: "Rotina do Aluno"
+        },
+        {
+            question: "O aluno pode acessar materiais das disciplinas online?",
+            options: ["Sim", "Não"],
+            correct: 0,
+            section: "Rotina do Aluno"
+        },
+        {
+            question: "A UNIFOR oferece apoio acadêmico aos estudantes?",
+            options: ["Sim", "Não"],
+            correct: 0,
+            section: "Rotina do Aluno"
+        },
+        {
+            question: "As clínicas-escola da UNIFOR são utilizadas para:",
+            options: ["Apenas pesquisa", "Prática supervisionada dos alunos", "Atendimento administrativo", "Eventos acadêmicos"],
+            correct: 1,
+            section: "Vivência Universitária"
+        },
+        {
+            question: "O Hospital da UNIFOR está ligado principalmente a cursos da área:",
+            options: ["Humanas", "Saúde", "Comunicação", "Exatas"],
+            correct: 1,
+            section: "Vivência Universitária"
+        },
+        {
+            question: "Os projetos de extensão têm como objetivo principal:",
+            options: ["Substituir disciplinas", "Integrar universidade e sociedade", "Avaliar alunos", "Reduzir carga horária"],
+            correct: 1,
+            section: "Vivência Universitária"
+        },
+        {
+            question: "Os auditórios da UNIFOR são usados principalmente para:",
+            options: ["Aulas comuns", "Palestras e eventos", "Atendimentos individuais", "Avaliações"],
+            correct: 1,
+            section: "Vivência Universitária"
+        },
+        {
+            question: "As semanas acadêmicas dos cursos servem para:",
+            options: ["Cancelar aulas", "Aprofundar conhecimentos", "Reduzir carga horária", "Avaliar alunos"],
+            correct: 1,
+            section: "Vivência Universitária"
+        },
+        {
+            question: "A UNIFOR oferece programas de intercâmbio acadêmico?",
+            options: ["Sim", "Não"],
+            correct: 0,
+            section: "Vivência Universitária"
+        },
+        {
+            question: "A participação em projetos de pesquisa contribui para:",
+            options: ["Apenas notas", "Produção de conhecimento", "Cancelamento de disciplinas", "Redução de avaliações"],
+            correct: 1,
+            section: "Vivência Universitária"
+        },
+        {
+            question: "Os professores da UNIFOR são, em sua maioria:",
+            options: ["Apenas graduados", "Mestres e doutores", "Estagiários", "Voluntários"],
+            correct: 1,
+            section: "Vivência Universitária"
+        },
+        {
+            question: "A UNIFOR possui espaços de convivência para os alunos?",
+            options: ["Sim", "Não"],
+            correct: 0,
+            section: "Vivência Universitária"
+        },
+        {
+            question: "A universidade oferece atividades esportivas aos estudantes?",
+            options: ["Sim", "Não"],
+            correct: 0,
+            section: "Vivência Universitária"
+        },
+        {
+            question: "Os laboratórios da UNIFOR auxiliam principalmente em:",
+            options: ["Atividades administrativas", "Aulas práticas", "Eventos culturais", "Atividades online"],
+            correct: 1,
+            section: "Estrutura e Funcionamento"
+        },
+        {
+            question: "A biblioteca aberta à comunidade demonstra:",
+            options: ["Uso restrito", "Compromisso social", "Exclusividade acadêmica", "Atendimento apenas interno"],
+            correct: 1,
+            section: "Estrutura e Funcionamento"
+        },
+        {
+            question: "A UNIFOR realiza eventos culturais com o objetivo de:",
+            options: ["Apenas entretenimento", "Complementar a formação", "Avaliar alunos", "Substituir disciplinas"],
+            correct: 1,
+            section: "Estrutura e Funcionamento"
+        },
+        {
+            question: "A segurança interna do campus tem como função principal:",
+            options: ["Avaliar alunos", "Garantir segurança da comunidade", "Controlar frequência", "Aplicar punições acadêmicas"],
+            correct: 1,
+            section: "Estrutura e Funcionamento"
+        },
+        {
+            question: "A oferta de cursos em várias áreas indica que a UNIFOR possui:",
+            options: ["Atuação limitada", "Diversidade acadêmica", "Foco técnico", "Ensino básico"],
+            correct: 1,
+            section: "Estrutura e Funcionamento"
+        },
+        {
+            question: "A UNIFOR oferece programas de bolsas e financiamentos para:",
+            options: ["Reduzir vagas", "Facilitar acesso ao ensino superior", "Substituir mensalidades", "Atender apenas pós-graduação"],
+            correct: 1,
+            section: "Estrutura e Funcionamento"
+        },
+        {
+            question: "A colação de grau representa:",
+            options: ["Avaliação final", "Conclusão da formação acadêmica", "Início do curso", "Cancelamento de disciplinas"],
+            correct: 1,
+            section: "Estrutura e Funcionamento"
+        },
+        {
+            question: "A UNIFOR promove eventos abertos à comunidade externa para:",
+            options: ["Divulgação interna", "Integração com a sociedade", "Avaliação institucional", "Captação exclusiva de alunos"],
+            correct: 1,
+            section: "Estrutura e Funcionamento"
+        },
+        {
+            question: "Os cursos de Tecnologia da UNIFOR estão ligados a:",
+            options: ["Uso básico de computador", "Inovação e desenvolvimento", "Apenas manutenção", "Atividades administrativas"],
+            correct: 1,
+            section: "Estrutura e Funcionamento"
+        },
+        {
+            question: "A UNIFOR atua em ensino, pesquisa e:",
+            options: ["Administração", "Extensão", "Avaliação", "Finanças"],
+            correct: 1,
+            section: "Estrutura e Funcionamento"
+        },
+        {
+            question: "A formação universitária busca preparar o aluno para:",
+            options: ["Apenas provas", "Mercado de trabalho e sociedade", "Atividades teóricas apenas", "Concursos exclusivamente"],
+            correct: 1,
+            section: "Reflexão Acadêmica"
+        },
+        {
+            question: "A participação em atividades extracurriculares permite ao aluno:",
+            options: ["Reduzir disciplinas", "Desenvolver novas habilidades", "Evitar avaliações", "Cancelar estágios"],
+            correct: 1,
+            section: "Reflexão Acadêmica"
+        },
+        {
+            question: "O acesso a serviços digitais facilita:",
+            options: ["Apenas comunicação", "A rotina acadêmica", "Apenas matrícula", "Apenas pagamentos"],
+            correct: 1,
+            section: "Reflexão Acadêmica"
+        },
+        {
+            question: "A integração entre ensino, pesquisa e extensão contribui para:",
+            options: ["Redução de carga horária", "Formação mais completa", "Cancelamento de aulas", "Avaliação institucional"],
+            correct: 1,
+            section: "Reflexão Acadêmica"
+        },
+        {
+            question: "A UNIFOR investir em infraestrutura demonstra:",
+            options: ["Crescimento físico apenas", "Compromisso com a qualidade", "Redução de custos", "Foco administrativo"],
+            correct: 1,
+            section: "Reflexão Acadêmica"
+        },
+        {
+            question: "A convivência no campus contribui para:",
+            options: ["Apenas socialização", "Desenvolvimento pessoal e acadêmico", "Avaliação disciplinar", "Controle institucional"],
+            correct: 1,
+            section: "Reflexão Acadêmica"
+        },
+        {
+            question: "A oferta de cursos presenciais e EAD indica:",
+            options: ["Padronização do ensino", "Flexibilidade ao aluno", "Redução de qualidade", "Exclusividade tecnológica"],
+            correct: 1,
+            section: "Reflexão Acadêmica"
+        },
+        {
+            question: "A atuação cultural da UNIFOR reforça sua:",
+            options: ["Estrutura administrativa", "Responsabilidade social", "Avaliação institucional", "Organização acadêmica"],
+            correct: 1,
+            section: "Reflexão Acadêmica"
+        },
+        {
+            question: "A participação do aluno em projetos institucionais contribui para:",
+            options: ["Apenas carga horária", "Desenvolvimento profissional", "Cancelamento de disciplinas", "Redução de avaliações"],
+            correct: 1,
+            section: "Reflexão Acadêmica"
+        },
         {
             question: "A experiência universitária envolve:",
             options: ["Apenas aulas", "Ensino, vivência e formação integral", "Atividades online apenas", "Avaliações contínuas"],
@@ -881,19 +1168,14 @@
     const savedResultsSection = document.getElementById('savedResultsSection');
     const savedResultsList = document.getElementById('savedResultsList');
 
-    // Função para selecionar 5 questões aleatórias (mantido igual)
+    // Função para selecionar 5 questões aleatórias - CORRIGIDA
     function selectRandomQuestions() {
+        // Embaralha todas as questões
         const shuffled = [...questions].sort(() => Math.random() - 0.5);
-        const selected = [];
-        const sectionsUsed = new Set();
-
-        for (let i = 0; i < shuffled.length && selected.length < 5; i++) {
-            if (!sectionsUsed.has(shuffled[i].section) || selected.length >= 4) {
-                selected.push(shuffled[i]);
-                sectionsUsed.add(shuffled[i].section);
-            }
-        }
-
+        
+        // Pega apenas as primeiras 5 questões embaralhadas
+        const selected = shuffled.slice(0, 5);
+        
         return selected;
     }
 
@@ -1239,6 +1521,3 @@
   </script>
 </body>
 </html>
-
-
-
