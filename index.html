@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title> Quiz UNIFOR - Universidade de Fortaleza</title>
+  <title>Quiz UNIFOR - Universidade de Fortaleza</title>
   <style>
     * {
         margin: 0;
@@ -60,9 +60,8 @@
         margin-bottom: 5px;
     }
 
-    /* LOGO MAIOR NO CABEÇALHO */
     .unifor-logo {
-        height: 80px; /* AUMENTADO de 60px para 80px */
+        height: 80px;
         width: auto;
         transition: transform 0.3s ease;
     }
@@ -72,13 +71,13 @@
     }
 
     .header h1 {
-        font-size: 2.4rem; /* Um pouco maior */
+        font-size: 2.4rem;
         margin-bottom: 5px;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     }
 
     .header .subtitle {
-        font-size: 1.2rem; /* Um pouco maior */
+        font-size: 1.2rem;
         opacity: 0.9;
         max-width: 600px;
         margin: 0 auto;
@@ -209,7 +208,6 @@
         box-shadow: 0 0 0 3px rgba(12, 36, 97, 0.2);
     }
 
-    /* BOTÕES PRINCIPAIS */
     .primary-buttons {
         display: flex;
         flex-direction: column;
@@ -235,6 +233,7 @@
         gap: 12px;
         min-width: 250px;
         text-align: center;
+        white-space: nowrap;
     }
 
     .btn:hover {
@@ -246,19 +245,21 @@
         transform: translateY(-1px);
     }
 
-    /* BOTÃO GERAR RELATÓRIO ESTILIZADO */
-    .report-btn {
-        background: linear-gradient(135deg, #28a745 0%, #218838 100%);
-        margin-top: 10px;
-        border: 2px solid #1e7e34;
+    .btn-warning {
+        background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+        color: #212529;
     }
 
-    .report-btn:hover {
-        box-shadow: 0 10px 20px rgba(40, 167, 69, 0.3);
+    .btn-success {
+        background: linear-gradient(135deg, #28a745 0%, #218838 100%);
     }
 
     .btn-secondary {
         background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+    }
+
+    .btn-info {
+        background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
     }
 
     .question-container {
@@ -498,7 +499,33 @@
         font-size: 1.1rem;
     }
 
-    /* RODAPÉ MELHORADO */
+    .status-message {
+        padding: 12px;
+        border-radius: 8px;
+        margin: 10px 0;
+        font-weight: 500;
+        display: none;
+        animation: fadeIn 0.5s;
+    }
+
+    .status-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .status-error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+
+    .status-warning {
+        background-color: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeaa7;
+    }
+
     .footer {
         text-align: center;
         margin-top: 40px;
@@ -521,7 +548,7 @@
     }
 
     .footer-logo {
-        height: 35px; /* Logo do rodapé um pouco maior */
+        height: 35px;
         width: auto;
         opacity: 0.8;
         transition: opacity 0.3s ease;
@@ -639,7 +666,6 @@
     <div class="header">
       <div class="header-content">
         <div class="logo-container">
-          <!-- LOGO MAIOR NO CABEÇALHO -->
           <img
             src="logo-unifor.png"
             alt="Logo UNIFOR"
@@ -662,7 +688,7 @@
             <ul>
               <li>5 questões selecionadas aleatoriamente por tentativa</li>
               <li>Brinde especial para quem acertar todas as 5 questões!</li>
-              <li>Seus resultados serão registrados automaticamente</li>
+              <li>Resultados salvos automaticamente na planilha online</li>
             </ul>
           </div>
 
@@ -676,6 +702,7 @@
                   class="form-control"
                   placeholder="Digite seu nome completo"
                   maxlength="100"
+                  required
                 />
               </div>
               <div style="flex: 1;">
@@ -686,19 +713,21 @@
                   class="form-control"
                   placeholder="Digite sua matrícula"
                   maxlength="20"
+                  required
                 />
               </div>
             </div>
           </div>
 
+          <div id="statusMessage" class="status-message"></div>
+
           <div class="primary-buttons">
-            <button id="startQuiz" class="btn">
+            <button id="startQuiz" class="btn btn-success">
               🚀 Iniciar Quiz
             </button>
             
-            <!-- BOTÃO GERAR RELATÓRIO ESTILIZADO -->
-            <button id="generateReport" class="btn report-btn">
-              📊 Gerar Relatório Completo
+            <button id="viewResults" class="btn btn-warning">
+              📊 Ver Resultados Online
             </button>
           </div>
         </div>
@@ -707,9 +736,10 @@
       <!-- Tela da Questão -->
       <div id="questionScreen" class="screen">
         <div class="player-info-display">
-          <h3> Participante</h3>
+          <h3>Participante</h3>
           <p><strong>Nome:</strong> <span id="displayPlayerName">-</span></p>
           <p><strong>Matrícula:</strong> <span id="displayPlayerMatricula">-</span></p>
+          <p><strong>Progresso:</strong> <span id="displayProgress">1/5</span></p>
         </div>
         
         <div class="question-container">
@@ -734,7 +764,7 @@
             <button id="nextQuestion" class="btn" style="display: none;">
               ⏭️ Próxima Questão
             </button>
-            <button id="submitAnswer" class="btn">
+            <button id="submitAnswer" class="btn btn-success">
               ✅ Confirmar Resposta
             </button>
           </div>
@@ -749,7 +779,7 @@
             <p><strong>Nome:</strong> <span id="resultPlayerName">-</span></p>
             <p><strong>Matrícula:</strong> <span id="resultPlayerMatricula">-</span></p>
             <p><strong>Data/Hora:</strong> <span id="resultDateTime">-</span></p>
-            <p><strong>Status:</strong> <span id="saveStatus">Resultado salvo automaticamente ✅</span></p>
+            <p><strong>Status:</strong> <span id="saveStatus">Salvando resultado...</span></p>
           </div>
           
           <div class="result-icon" id="resultIcon">🎯</div>
@@ -761,7 +791,6 @@
             <div class="progress-fill" id="progressFill"></div>
           </div>
 
-          <!-- MENSAGEM DO BRINDE (APENAS SE ACERTAR 5) -->
           <div id="prizeMessage" class="prize-message" style="display: none;">
             <h3>🎁 PARABÉNS! VOCÊ GANHOU UM BRINDE! 🎁</h3>
             <p>
@@ -772,12 +801,7 @@
             </p>
           </div>
 
-          <!-- MENSAGEM DE NÃO GANHOU BRINDE -->
-          <div
-            id="noPrizeMessage"
-            class="no-prize-message"
-            style="display: none;"
-          >
+          <div id="noPrizeMessage" class="no-prize-message" style="display: none;">
             <h3>😔 Infelizmente não foi dessa vez...</h3>
             <p>Você acertou <span id="scoreText">0</span> de 5 questões.</p>
             <p>
@@ -790,16 +814,16 @@
           </div>
 
           <div class="controls">
-            <button id="restartQuiz" class="btn">🔄 Jogar Novamente</button>
-            <button id="exportResults" class="btn">
-              📥 Exportar Meus Resultados
+            <button id="restartQuiz" class="btn btn-success">🔄 Jogar Novamente</button>
+            <button id="newPlayer" class="btn">👤 Novo Participante</button>
+            <button id="viewResultsBtn" class="btn btn-warning">
+              📊 Ver Resultados na Planilha
             </button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- RODAPÉ MELHORADO -->
     <div class="footer">
       <div class="footer-content">
         <img
@@ -808,13 +832,21 @@
           class="footer-logo"
           onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjUwIiB2aWV3Qm94PSIwIDAgMjAwIDUwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iNTAiIGZpbGw9IiMwQzI0NjEiLz48dGV4dCB4PSIxMCIgeT0iMzUiIGZpbGw9IndoaXRlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiPlVOSUZPUjwvdGV4dD48L3N2Zz4=';"
         />
-        <div class="footer-text">Universidade de Fortaleza</div>
+        <div class="footer-text">Universidade de Fortaleza | Quiz PAPSA</div>
+      </div>
+      <div class="footer-copyright">
+        Resultados são salvos automaticamente na planilha online
       </div>
     </div>
   </div>
 
   <script>
-    // Banco de dados de questões da UNIFOR - COM NOVAS PERGUNTAS
+    // CONFIGURAÇÃO DO GOOGLE SHEETS
+    // SUAS URLs CONFIGURADAS
+    const GOOGLE_SHEETS_API = "https://script.google.com/macros/s/AKfycbwRhk4qoH56xR80PcLKDPy1dQSB4eUyiEp_ItSy5xHD2N7g8eRRvzETPcmLo0tIt0TxiQ/exec";
+    const GOOGLE_SHEETS_LINK = "https://docs.google.com/spreadsheets/d/1BbeR7cGRsi5HaM1W5DMtovB_lbPFfbTZlDyoPIICrBc/edit";
+    
+    // Banco de dados de questões da UNIFOR
     const questions = [
         {
             question: "Onde o aluno acessa informações sobre disciplinas e notas?",
@@ -1056,7 +1088,6 @@
             correct: 1,
             section: "Reflexão Acadêmica"
         },
-        // NOVAS PERGUNTAS ADICIONADAS
         {
             question: "Onde o aluno costuma consultar notas e frequência das disciplinas?",
             options: ["Biblioteca", "Portal do Aluno", "Secretaria presencial", "Aplicativo bancário"],
@@ -1185,7 +1216,7 @@
         }
     ];
 
-    // Variáveis do jogo (mantido igual)
+    // Variáveis do jogo
     let currentQuestions = [];
     let currentQuestionIndex = 0;
     let score = 0;
@@ -1193,7 +1224,6 @@
     let playerMatricula = "";
     let selectedOption = null;
     let gameResults = [];
-    let savedResults = JSON.parse(localStorage.getItem('uniforQuizResults')) || [];
 
     // Elementos DOM
     const welcomeScreen = document.getElementById('welcomeScreen');
@@ -1202,11 +1232,12 @@
     const playerNameInput = document.getElementById('playerName');
     const playerMatriculaInput = document.getElementById('playerMatricula');
     const startQuizBtn = document.getElementById('startQuiz');
-    const generateReportBtn = document.getElementById('generateReport');
+    const viewResultsBtn = document.getElementById('viewResults');
     const questionText = document.getElementById('questionText');
     const optionsContainer = document.getElementById('optionsContainer');
     const currentQuestionNum = document.getElementById('currentQuestion');
     const sectionTag = document.getElementById('sectionTag');
+    const displayProgress = document.getElementById('displayProgress');
     const feedbackDiv = document.getElementById('feedback');
     const submitAnswerBtn = document.getElementById('submitAnswer');
     const nextQuestionBtn = document.getElementById('nextQuestion');
@@ -1219,32 +1250,45 @@
     const scoreText = document.getElementById('scoreText');
     const questionReview = document.getElementById('questionReview');
     const restartQuizBtn = document.getElementById('restartQuiz');
-    const exportResultsBtn = document.getElementById('exportResults');
+    const newPlayerBtn = document.getElementById('newPlayer');
+    const viewResultsBtn2 = document.getElementById('viewResultsBtn');
     const displayPlayerName = document.getElementById('displayPlayerName');
     const displayPlayerMatricula = document.getElementById('displayPlayerMatricula');
     const resultPlayerName = document.getElementById('resultPlayerName');
     const resultPlayerMatricula = document.getElementById('resultPlayerMatricula');
     const resultDateTime = document.getElementById('resultDateTime');
     const saveStatus = document.getElementById('saveStatus');
+    const statusMessage = document.getElementById('statusMessage');
 
-    // Função para selecionar 5 questões aleatórias - CORRIGIDA
-    function selectRandomQuestions() {
-        // Embaralha todas as questões
-        const shuffled = [...questions].sort(() => Math.random() - 0.5);
+    // Função para mostrar mensagens de status
+    function showStatus(message, type = 'success') {
+        statusMessage.textContent = message;
+        statusMessage.className = `status-message status-${type}`;
+        statusMessage.style.display = 'block';
         
-        // Pega apenas as primeiras 5 questões embaralhadas
-        const selected = shuffled.slice(0, 5);
-        
-        return selected;
+        setTimeout(() => {
+            statusMessage.style.display = 'none';
+        }, 5000);
     }
 
-    // Inicializar o quiz (mantido igual)
+    // Função para selecionar 5 questões aleatórias
+    function selectRandomQuestions() {
+        const shuffled = [...questions].sort(() => Math.random() - 0.5);
+        return shuffled.slice(0, 5);
+    }
+
+    // Inicializar o quiz
     function initQuiz() {
         playerName = playerNameInput.value.trim();
         playerMatricula = playerMatriculaInput.value.trim();
         
         if (!playerName || !playerMatricula) {
-            alert('Por favor, preencha seu nome e matrícula para começar!');
+            showStatus('Por favor, preencha seu nome e matrícula para começar!', 'error');
+            return;
+        }
+        
+        if (playerMatricula.length < 3) {
+            showStatus('Matrícula inválida! Digite uma matrícula válida.', 'error');
             return;
         }
         
@@ -1252,28 +1296,33 @@
         currentQuestionIndex = 0;
         score = 0;
         gameResults = [];
+        selectedOption = null;
 
         displayPlayerName.textContent = playerName;
         displayPlayerMatricula.textContent = playerMatricula;
+        displayProgress.textContent = '1/5';
 
         showQuestionScreen();
         loadQuestion();
+        
+        showStatus('Quiz iniciado! Boa sorte!', 'success');
     }
 
-    // Mostrar tela de questão (mantido igual)
+    // Mostrar tela de questão
     function showQuestionScreen() {
         welcomeScreen.classList.remove('active');
         resultScreen.classList.remove('active');
         questionScreen.classList.add('active');
     }
 
-    // Carregar questão atual (mantido igual)
+    // Carregar questão atual
     function loadQuestion() {
         const question = currentQuestions[currentQuestionIndex];
 
         questionText.textContent = question.question;
         currentQuestionNum.textContent = currentQuestionIndex + 1;
         sectionTag.textContent = question.section;
+        displayProgress.textContent = `${currentQuestionIndex + 1}/5`;
 
         optionsContainer.innerHTML = '';
         selectedOption = null;
@@ -1295,7 +1344,7 @@
         });
     }
 
-    // Selecionar uma opção (mantido igual)
+    // Selecionar uma opção
     function selectOption(optionDiv, index) {
         document.querySelectorAll('.option').forEach(opt => {
             opt.classList.remove('selected');
@@ -1305,10 +1354,10 @@
         selectedOption = index;
     }
 
-    // Submeter resposta (mantido igual)
+    // Submeter resposta
     function submitAnswer() {
         if (selectedOption === null) {
-            alert('Por favor, selecione uma opção antes de confirmar!');
+            showStatus('Por favor, selecione uma opção antes de confirmar!', 'warning');
             return;
         }
 
@@ -1346,7 +1395,7 @@
         nextQuestionBtn.style.display = 'inline-flex';
     }
 
-    // Próxima questão (mantido igual)
+    // Próxima questão
     function nextQuestion() {
         currentQuestionIndex++;
 
@@ -1357,14 +1406,69 @@
         }
     }
 
-    // Mostrar tela de resultados (mantido igual)
-    function showResultScreen() {
+    // Salvar resultado no Google Sheets
+    async function saveToGoogleSheets(resultData) {
+        try {
+            // Obter informações do dispositivo
+            const dispositivo = navigator.userAgent.substring(0, 150);
+            
+            // Tentar obter IP
+            let ip = "Desconhecido";
+            try {
+                const ipResponse = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipResponse.json();
+                ip = ipData.ip || "Desconhecido";
+            } catch (ipError) {
+                console.log("Não foi possível obter IP:", ipError);
+            }
+            
+            const dataToSend = {
+                nome: resultData.nome,
+                matricula: resultData.matricula,
+                data: resultData.data,
+                pontuacao: resultData.pontuacao,
+                totalQuestoes: resultData.totalQuestoes,
+                percentual: resultData.percentual,
+                ganhouBrinde: resultData.ganhouBrinde ? "Sim" : "Não",
+                dispositivo: dispositivo,
+                ip: ip
+            };
+            
+            // Usar FormData para evitar problemas CORS
+            const formData = new FormData();
+            formData.append('data', JSON.stringify(dataToSend));
+            
+            const response = await fetch(GOOGLE_SHEETS_API, {
+                method: 'POST',
+                body: formData
+            });
+            
+            if (response.ok) {
+                return true;
+            } else {
+                throw new Error('Erro na resposta do servidor');
+            }
+        } catch (error) {
+            console.error("Erro ao salvar no Google Sheets:", error);
+            return false;
+        }
+    }
+
+    // Mostrar tela de resultados
+    async function showResultScreen() {
         questionScreen.classList.remove('active');
         resultScreen.classList.add('active');
 
         const percentage = (score / currentQuestions.length) * 100;
         const totalQuestions = currentQuestions.length;
-        const currentDateTime = new Date().toLocaleString('pt-BR');
+        const currentDateTime = new Date().toLocaleString('pt-BR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
 
         resultPlayerName.textContent = playerName;
         resultPlayerMatricula.textContent = playerMatricula;
@@ -1372,6 +1476,7 @@
 
         scoreDisplay.textContent = `${score}/${totalQuestions}`;
         progressFill.style.width = `${percentage}%`;
+        progressFill.style.transition = 'width 1s ease';
         scoreText.textContent = score;
 
         if (score === totalQuestions) {
@@ -1397,12 +1502,43 @@
             noPrizeMessage.style.display = 'block';
         }
 
-        // SALVAR RESULTADO AUTOMATICAMENTE
-        saveQuizResults(true);
+        // SALVAR RESULTADO
+        const resultData = {
+            nome: playerName,
+            matricula: playerMatricula,
+            data: currentDateTime,
+            pontuacao: score,
+            totalQuestoes: totalQuestions,
+            percentual: Math.round(percentage),
+            ganhouBrinde: score === totalQuestions
+        };
+
+        // Salvar na nuvem (Google Sheets)
+        saveStatus.textContent = "Salvando resultado na planilha online...";
+        saveStatus.style.color = '#ffc107';
+        
+        try {
+            const cloudSaved = await saveToGoogleSheets(resultData);
+            
+            if (cloudSaved) {
+                saveStatus.innerHTML = '✅ Resultado salvo com sucesso na planilha!';
+                saveStatus.style.color = '#28a745';
+                showStatus('Resultado salvo na planilha online!', 'success');
+            } else {
+                saveStatus.innerHTML = '⚠️ Resultado salvo apenas localmente';
+                saveStatus.style.color = '#dc3545';
+                showStatus('Erro ao salvar na nuvem. Resultado salvo localmente.', 'warning');
+            }
+        } catch (error) {
+            saveStatus.innerHTML = '⚠️ Erro ao salvar na planilha';
+            saveStatus.style.color = '#dc3545';
+            showStatus('Erro de conexão. Tente novamente mais tarde.', 'error');
+        }
+        
         showQuestionReview();
     }
 
-    // Mostrar revisão das questões (mantido igual)
+    // Mostrar revisão das questões
     function showQuestionReview() {
         questionReview.innerHTML = '<h3>📋 Revisão das Questões</h3>';
 
@@ -1419,185 +1555,48 @@
         });
     }
 
-    // Salvar resultados automaticamente (MELHORADA)
-    function saveQuizResults(autoSave = false) {
-        const resultData = {
-            id: Date.now(),
-            nome: playerName,
-            matricula: playerMatricula,
-            data: new Date().toLocaleString('pt-BR', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            }),
-            pontuacao: score,
-            totalQuestoes: currentQuestions.length,
-            percentual: Math.round((score / currentQuestions.length) * 100),
-            ganhouBrinde: score === currentQuestions.length,
-            detalhes: gameResults
-        };
-
-        // Garantir que savedResults seja um array
-        if (!Array.isArray(savedResults)) {
-            savedResults = [];
-        }
-        
-        // Adicionar no início da lista
-        savedResults.unshift(resultData);
-        
-        // Limitar a 100 resultados para não sobrecarregar o localStorage
-        if (savedResults.length > 100) {
-            savedResults = savedResults.slice(0, 100);
-        }
-        
-        localStorage.setItem('uniforQuizResults', JSON.stringify(savedResults));
-        
-        if (!autoSave) {
-            alert('Resultado salvo com sucesso!');
-        }
+    // Abrir resultados online
+    function openResultsOnline() {
+        // Abre a planilha do Google Sheets em uma nova aba
+        window.open(GOOGLE_SHEETS_LINK, '_blank');
+        showStatus('Abrindo planilha com todos os resultados...', 'info');
     }
 
-    // Exportar dados para CSV (MELHORADA)
-    function exportQuizResults() {
-        const results = JSON.parse(localStorage.getItem('uniforQuizResults')) || [];
+    // Reiniciar quiz para o mesmo jogador
+    function restartQuizForSamePlayer() {
+        currentQuestions = selectRandomQuestions();
+        currentQuestionIndex = 0;
+        score = 0;
+        gameResults = [];
+        selectedOption = null;
+
+        showQuestionScreen();
+        loadQuestion();
         
-        if (results.length === 0) {
-            alert('Nenhum resultado para exportar!');
-            return;
-        }
-        
-        // Usar ponto e vírgula como separador (mais comum no Excel BR)
-        let csv = 'Nome;Matrícula;Data;Pontuação;Total;Percentual;Ganhou Brinde\n';
-        
-        results.forEach(result => {
-            // Limpar caracteres problemáticos
-            const cleanName = result.nome ? result.nome.replace(/"/g, "'").replace(/;/g, ",") : "";
-            const cleanMatricula = result.matricula ? result.matricula.replace(/"/g, "'").replace(/;/g, ",") : "";
-            const cleanData = result.data ? result.data.replace(/"/g, "'") : "";
-            
-            csv += `"${cleanName}";"${cleanMatricula}";"${cleanData}";${result.pontuacao || 0};${result.totalQuestoes || 5};${result.percentual || 0}%;${result.ganhouBrinde ? 'Sim' : 'Não'}\n`;
-        });
-        
-        // Adicionar BOM (Byte Order Mark) para UTF-8 no Excel
-        const BOM = "\uFEFF";
-        const blob = new Blob([BOM + csv], { type: 'text/csv;charset=utf-8;' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        
-        const now = new Date();
-        const dateStr = now.toISOString().split('T')[0];
-        a.download = `meus-resultados-quiz-unifor-${dateStr}.csv`;
-        
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-        
-        alert(`Seus resultados foram exportados! ${results.length} registros.`);
+        showStatus('Novo quiz iniciado! Boa sorte!', 'success');
     }
 
-    // Gerar relatório completo com todos os resultados (MELHORADA)
-    function generateCompleteReport() {
-        const results = JSON.parse(localStorage.getItem('uniforQuizResults')) || [];
-        
-        if (results.length === 0) {
-            alert('Nenhum resultado encontrado para gerar relatório!');
-            return;
-        }
-        
-        // Cabeçalho mais detalhado e organizado
-        let csv = 'ID;Nome;Matrícula;Data/Hora;Pontuação;Total Questões;Percentual;Ganhou Brinde;Detalhes das Questões\n';
-        
-        results.forEach(result => {
-            // Limpar caracteres problemáticos para CSV
-            const cleanName = result.nome ? result.nome.replace(/"/g, "'").replace(/;/g, ",") : "";
-            const cleanMatricula = result.matricula ? result.matricula.replace(/"/g, "'").replace(/;/g, ",") : "";
-            const cleanData = result.data ? result.data.replace(/"/g, "'") : "";
-            
-            // Resumo das questões com formatação melhor
-            let detalhes = "";
-            if (result.detalhes && result.detalhes.length > 0) {
-                detalhes = result.detalhes.map((q, i) => 
-                    `Q${i+1}: ${q.isCorrect ? '✓' : '✗'}`
-                ).join(" | ");
-            }
-            
-            // Limpar detalhes para evitar problemas no CSV
-            detalhes = detalhes.replace(/"/g, "'").replace(/\n/g, " ");
-            
-            // Usar ponto e vírgula como separador (mais comum no Excel BR)
-            csv += `${result.id || ""};"${cleanName}";"${cleanMatricula}";"${cleanData}";${result.pontuacao || 0};${result.totalQuestoes || 5};${result.percentual || 0}%;${result.ganhouBrinde ? 'Sim' : 'Não'};"${detalhes}"\n`;
-        });
-        
-        // Adicionar BOM (Byte Order Mark) para UTF-8 no Excel
-        const BOM = "\uFEFF";
-        const blob = new Blob([BOM + csv], { type: 'text/csv;charset=utf-8;' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        
-        // Nome do arquivo com data atual
-        const now = new Date();
-        const dateStr = now.toISOString().split('T')[0];
-        const timeStr = now.toTimeString().split(' ')[0].replace(/:/g, '-');
-        a.download = `relatorio-quiz-unifor-${dateStr}_${timeStr}.csv`;
-        
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-        
-        alert(`Relatório gerado com sucesso! ${results.length} resultados exportados.`);
-    }
-
-    // Função para limpar todos os resultados
-    function clearAllResults() {
-        if (confirm('Tem certeza que deseja apagar TODOS os resultados salvos? Esta ação não pode ser desfeita.')) {
-            localStorage.removeItem('uniforQuizResults');
-            savedResults = [];
-            alert('Todos os resultados foram apagados!');
-        }
-    }
-
-    // Reiniciar o quiz (mantido igual)
-    function restartQuiz() {
-        // Limpar campos de entrada
+    // Novo participante
+    function newPlayer() {
         playerNameInput.value = '';
         playerMatriculaInput.value = '';
         
         welcomeScreen.classList.add('active');
         resultScreen.classList.remove('active');
-        questionScreen.classList.remove('active');
-    }
-
-    // Adicionar botão de limpar resultados na tela de resultados
-    function addClearResultsButton() {
-        // Criar botão de limpar resultados
-        const clearResultsBtn = document.createElement('button');
-        clearResultsBtn.className = 'btn btn-secondary';
-        clearResultsBtn.innerHTML = '🗑️ Limpar Resultados';
-        clearResultsBtn.onclick = clearAllResults;
         
-        // Adicionar à tela de resultados
-        const controlsDiv = document.querySelector('.result-screen .controls');
-        if (controlsDiv) {
-            controlsDiv.appendChild(clearResultsBtn);
-        }
+        showStatus('Pronto para um novo participante!', 'success');
     }
 
-    // Event Listeners (mantido igual)
+    // Event Listeners
     startQuizBtn.addEventListener('click', initQuiz);
-    generateReportBtn.addEventListener('click', generateCompleteReport);
+    viewResultsBtn.addEventListener('click', openResultsOnline);
+    viewResultsBtn2.addEventListener('click', openResultsOnline);
     submitAnswerBtn.addEventListener('click', submitAnswer);
     nextQuestionBtn.addEventListener('click', nextQuestion);
-    restartQuizBtn.addEventListener('click', restartQuiz);
-    exportResultsBtn.addEventListener('click', exportQuizResults);
+    restartQuizBtn.addEventListener('click', restartQuizForSamePlayer);
+    newPlayerBtn.addEventListener('click', newPlayer);
 
-    // Permitir Enter no formulário (mantido igual)
+    // Permitir Enter no formulário
     playerNameInput.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             playerMatriculaInput.focus();
@@ -1610,14 +1609,10 @@
         }
     });
 
-    // Carregar ao iniciar (mantido igual)
+    // Carregar ao iniciar
     window.addEventListener('load', () => {
-        const results = JSON.parse(localStorage.getItem('uniforQuizResults')) || [];
         console.log(`Quiz UNIFOR carregado com ${questions.length} questões disponíveis.`);
-        console.log(`${results.length} resultados salvos encontrados.`);
-        
-        // Adicionar botão de limpar resultados após carregar
-        addClearResultsButton();
+        showStatus('✅ Sistema configurado! Os resultados serão salvos automaticamente.', 'success');
     });
   </script>
 </body>
