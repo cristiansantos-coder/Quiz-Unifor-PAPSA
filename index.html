@@ -245,21 +245,8 @@
         transform: translateY(-1px);
     }
 
-    .btn-warning {
-        background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
-        color: #212529;
-    }
-
     .btn-success {
         background: linear-gradient(135deg, #28a745 0%, #218838 100%);
-    }
-
-    .btn-secondary {
-        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
-    }
-
-    .btn-info {
-        background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
     }
 
     .question-container {
@@ -499,33 +486,6 @@
         font-size: 1.1rem;
     }
 
-    .status-message {
-        padding: 12px;
-        border-radius: 8px;
-        margin: 10px 0;
-        font-weight: 500;
-        display: none;
-        animation: fadeIn 0.5s;
-    }
-
-    .status-success {
-        background-color: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
-    }
-
-    .status-error {
-        background-color: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
-    }
-
-    .status-warning {
-        background-color: #fff3cd;
-        color: #856404;
-        border: 1px solid #ffeaa7;
-    }
-
     .footer {
         text-align: center;
         margin-top: 40px;
@@ -688,7 +648,7 @@
             <ul>
               <li>5 questões selecionadas aleatoriamente por tentativa</li>
               <li>Brinde especial para quem acertar todas as 5 questões!</li>
-              <li>Resultados salvos automaticamente na planilha online</li>
+              <li>Seus resultados serão registrados automaticamente</li>
             </ul>
           </div>
 
@@ -719,15 +679,9 @@
             </div>
           </div>
 
-          <div id="statusMessage" class="status-message"></div>
-
           <div class="primary-buttons">
             <button id="startQuiz" class="btn btn-success">
               🚀 Iniciar Quiz
-            </button>
-            
-            <button id="viewResults" class="btn btn-warning">
-              📊 Ver Resultados Online
             </button>
           </div>
         </div>
@@ -779,7 +733,6 @@
             <p><strong>Nome:</strong> <span id="resultPlayerName">-</span></p>
             <p><strong>Matrícula:</strong> <span id="resultPlayerMatricula">-</span></p>
             <p><strong>Data/Hora:</strong> <span id="resultDateTime">-</span></p>
-            <p><strong>Status:</strong> <span id="saveStatus">Salvando resultado...</span></p>
           </div>
           
           <div class="result-icon" id="resultIcon">🎯</div>
@@ -816,9 +769,6 @@
           <div class="controls">
             <button id="restartQuiz" class="btn btn-success">🔄 Jogar Novamente</button>
             <button id="newPlayer" class="btn">👤 Novo Participante</button>
-            <button id="viewResultsBtn" class="btn btn-warning">
-              📊 Ver Resultados na Planilha
-            </button>
           </div>
         </div>
       </div>
@@ -835,16 +785,14 @@
         <div class="footer-text">Universidade de Fortaleza | Quiz PAPSA</div>
       </div>
       <div class="footer-copyright">
-        Resultados são salvos automaticamente na planilha online
+        Desenvolvido para a Universidade de Fortaleza
       </div>
     </div>
   </div>
 
   <script>
-    // CONFIGURAÇÃO DO GOOGLE SHEETS
-    // SUAS URLs CONFIGURADAS
+    // CONFIGURAÇÃO DO GOOGLE SHEETS (INVISÍVEL PARA O USUÁRIO)
     const GOOGLE_SHEETS_API = "https://script.google.com/macros/s/AKfycbwRhk4qoH56xR80PcLKDPy1dQSB4eUyiEp_ItSy5xHD2N7g8eRRvzETPcmLo0tIt0TxiQ/exec";
-    const GOOGLE_SHEETS_LINK = "https://docs.google.com/spreadsheets/d/1BbeR7cGRsi5HaM1W5DMtovB_lbPFfbTZlDyoPIICrBc/edit";
     
     // Banco de dados de questões da UNIFOR
     const questions = [
@@ -1232,7 +1180,6 @@
     const playerNameInput = document.getElementById('playerName');
     const playerMatriculaInput = document.getElementById('playerMatricula');
     const startQuizBtn = document.getElementById('startQuiz');
-    const viewResultsBtn = document.getElementById('viewResults');
     const questionText = document.getElementById('questionText');
     const optionsContainer = document.getElementById('optionsContainer');
     const currentQuestionNum = document.getElementById('currentQuestion');
@@ -1251,25 +1198,11 @@
     const questionReview = document.getElementById('questionReview');
     const restartQuizBtn = document.getElementById('restartQuiz');
     const newPlayerBtn = document.getElementById('newPlayer');
-    const viewResultsBtn2 = document.getElementById('viewResultsBtn');
     const displayPlayerName = document.getElementById('displayPlayerName');
     const displayPlayerMatricula = document.getElementById('displayPlayerMatricula');
     const resultPlayerName = document.getElementById('resultPlayerName');
     const resultPlayerMatricula = document.getElementById('resultPlayerMatricula');
     const resultDateTime = document.getElementById('resultDateTime');
-    const saveStatus = document.getElementById('saveStatus');
-    const statusMessage = document.getElementById('statusMessage');
-
-    // Função para mostrar mensagens de status
-    function showStatus(message, type = 'success') {
-        statusMessage.textContent = message;
-        statusMessage.className = `status-message status-${type}`;
-        statusMessage.style.display = 'block';
-        
-        setTimeout(() => {
-            statusMessage.style.display = 'none';
-        }, 5000);
-    }
 
     // Função para selecionar 5 questões aleatórias
     function selectRandomQuestions() {
@@ -1283,12 +1216,12 @@
         playerMatricula = playerMatriculaInput.value.trim();
         
         if (!playerName || !playerMatricula) {
-            showStatus('Por favor, preencha seu nome e matrícula para começar!', 'error');
+            alert('Por favor, preencha seu nome e matrícula para começar!');
             return;
         }
         
         if (playerMatricula.length < 3) {
-            showStatus('Matrícula inválida! Digite uma matrícula válida.', 'error');
+            alert('Matrícula inválida! Digite uma matrícula válida.');
             return;
         }
         
@@ -1304,8 +1237,6 @@
 
         showQuestionScreen();
         loadQuestion();
-        
-        showStatus('Quiz iniciado! Boa sorte!', 'success');
     }
 
     // Mostrar tela de questão
@@ -1357,7 +1288,7 @@
     // Submeter resposta
     function submitAnswer() {
         if (selectedOption === null) {
-            showStatus('Por favor, selecione uma opção antes de confirmar!', 'warning');
+            alert('Por favor, selecione uma opção antes de confirmar!');
             return;
         }
 
@@ -1406,20 +1337,18 @@
         }
     }
 
-    // Salvar resultado no Google Sheets
+    // Salvar resultado no Google Sheets (SILENCIOSAMENTE)
     async function saveToGoogleSheets(resultData) {
         try {
-            // Obter informações do dispositivo
             const dispositivo = navigator.userAgent.substring(0, 150);
             
-            // Tentar obter IP
             let ip = "Desconhecido";
             try {
                 const ipResponse = await fetch('https://api.ipify.org?format=json');
                 const ipData = await ipResponse.json();
                 ip = ipData.ip || "Desconhecido";
             } catch (ipError) {
-                console.log("Não foi possível obter IP:", ipError);
+                // Ignora erro de IP
             }
             
             const dataToSend = {
@@ -1434,23 +1363,28 @@
                 ip: ip
             };
             
-            // Usar FormData para evitar problemas CORS
-            const formData = new FormData();
-            formData.append('data', JSON.stringify(dataToSend));
+            // Usar fetch com timeout para não travar a interface
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 5000);
             
-            const response = await fetch(GOOGLE_SHEETS_API, {
-                method: 'POST',
-                body: formData
-            });
-            
-            if (response.ok) {
-                return true;
-            } else {
-                throw new Error('Erro na resposta do servidor');
+            try {
+                const response = await fetch(GOOGLE_SHEETS_API, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(dataToSend),
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeoutId);
+                return response.ok;
+            } catch (fetchError) {
+                clearTimeout(timeoutId);
+                return false; // Silenciosamente falha
             }
         } catch (error) {
-            console.error("Erro ao salvar no Google Sheets:", error);
-            return false;
+            return false; // Silenciosamente falha
         }
     }
 
@@ -1466,8 +1400,7 @@
             month: '2-digit',
             year: 'numeric',
             hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
+            minute: '2-digit'
         });
 
         resultPlayerName.textContent = playerName;
@@ -1502,7 +1435,7 @@
             noPrizeMessage.style.display = 'block';
         }
 
-        // SALVAR RESULTADO
+        // SALVAR RESULTADO SILENCIOSAMENTE
         const resultData = {
             nome: playerName,
             matricula: playerMatricula,
@@ -1513,27 +1446,11 @@
             ganhouBrinde: score === totalQuestions
         };
 
-        // Salvar na nuvem (Google Sheets)
-        saveStatus.textContent = "Salvando resultado na planilha online...";
-        saveStatus.style.color = '#ffc107';
-        
-        try {
-            const cloudSaved = await saveToGoogleSheets(resultData);
-            
-            if (cloudSaved) {
-                saveStatus.innerHTML = '✅ Resultado salvo com sucesso na planilha!';
-                saveStatus.style.color = '#28a745';
-                showStatus('Resultado salvo na planilha online!', 'success');
-            } else {
-                saveStatus.innerHTML = '⚠️ Resultado salvo apenas localmente';
-                saveStatus.style.color = '#dc3545';
-                showStatus('Erro ao salvar na nuvem. Resultado salvo localmente.', 'warning');
-            }
-        } catch (error) {
-            saveStatus.innerHTML = '⚠️ Erro ao salvar na planilha';
-            saveStatus.style.color = '#dc3545';
-            showStatus('Erro de conexão. Tente novamente mais tarde.', 'error');
-        }
+        // Salvar na planilha sem mostrar para o usuário
+        saveToGoogleSheets(resultData).then(success => {
+            // Não mostra nenhuma mensagem ao usuário
+            console.log('Resultado salvo na planilha:', success ? 'Sucesso' : 'Falha silenciosa');
+        });
         
         showQuestionReview();
     }
@@ -1555,13 +1472,6 @@
         });
     }
 
-    // Abrir resultados online
-    function openResultsOnline() {
-        // Abre a planilha do Google Sheets em uma nova aba
-        window.open(GOOGLE_SHEETS_LINK, '_blank');
-        showStatus('Abrindo planilha com todos os resultados...', 'info');
-    }
-
     // Reiniciar quiz para o mesmo jogador
     function restartQuizForSamePlayer() {
         currentQuestions = selectRandomQuestions();
@@ -1572,8 +1482,6 @@
 
         showQuestionScreen();
         loadQuestion();
-        
-        showStatus('Novo quiz iniciado! Boa sorte!', 'success');
     }
 
     // Novo participante
@@ -1583,14 +1491,10 @@
         
         welcomeScreen.classList.add('active');
         resultScreen.classList.remove('active');
-        
-        showStatus('Pronto para um novo participante!', 'success');
     }
 
     // Event Listeners
     startQuizBtn.addEventListener('click', initQuiz);
-    viewResultsBtn.addEventListener('click', openResultsOnline);
-    viewResultsBtn2.addEventListener('click', openResultsOnline);
     submitAnswerBtn.addEventListener('click', submitAnswer);
     nextQuestionBtn.addEventListener('click', nextQuestion);
     restartQuizBtn.addEventListener('click', restartQuizForSamePlayer);
@@ -1612,7 +1516,7 @@
     // Carregar ao iniciar
     window.addEventListener('load', () => {
         console.log(`Quiz UNIFOR carregado com ${questions.length} questões disponíveis.`);
-        showStatus('✅ Sistema configurado! Os resultados serão salvos automaticamente.', 'success');
+        console.log('Sistema configurado para salvar resultados automaticamente na planilha.');
     });
   </script>
 </body>
