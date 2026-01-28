@@ -791,7 +791,7 @@
   </div>
 
   <script>
-    // CONFIGURAÇÃO DO GOOGLE SHEETS (INVISÍVEL PARA O USUÁRIO)
+    // CONFIGURAÇÃO DO GOOGLE SHEETS
     const GOOGLE_SHEETS_API = "https://script.google.com/macros/s/AKfycbwRhk4qoH56xR80PcLKDPy1dQSB4eUyiEp_ItSy5xHD2N7g8eRRvzETPcmLo0tIt0TxiQ/exec";
     
     // Banco de dados de questões da UNIFOR
@@ -1337,54 +1337,51 @@
         }
     }
 
-    // Salvar resultado no Google Sheets (SILENCIOSAMENTE)
-    async function saveToGoogleSheets(resultData) {
+    // Nova função para salvar no Google Sheets
+    async function saveResultToSheets(resultData) {
         try {
-            const dispositivo = navigator.userAgent.substring(0, 150);
-            
-            let ip = "Desconhecido";
+            // Preparar os dados para envio
+            const dataToSend = {
+                nome: resultData.nome || "",
+                matricula: resultData.matricula || "",
+                data: resultData.data || new Date().toLocaleString('pt-BR'),
+                pontuacao: resultData.pontuacao || 0,
+                totalQuestoes: resultData.totalQuestoes || 5,
+                percentual: resultData.percentual || 0,
+                ganhouBrinde: resultData.ganhouBrinde ? "Sim" : "Não",
+                dispositivo: navigator.userAgent.substring(0, 150) || "Desconhecido",
+                ip: "Desconhecido"
+            };
+
+            // Tentar obter IP
             try {
                 const ipResponse = await fetch('https://api.ipify.org?format=json');
                 const ipData = await ipResponse.json();
-                ip = ipData.ip || "Desconhecido";
+                dataToSend.ip = ipData.ip || "Desconhecido";
             } catch (ipError) {
                 // Ignora erro de IP
             }
-            
-            const dataToSend = {
-                nome: resultData.nome,
-                matricula: resultData.matricula,
-                data: resultData.data,
-                pontuacao: resultData.pontuacao,
-                totalQuestoes: resultData.totalQuestoes,
-                percentual: resultData.percentual,
-                ganhouBrinde: resultData.ganhouBrinde ? "Sim" : "Não",
-                dispositivo: dispositivo,
-                ip: ip
-            };
-            
-            // Usar fetch com timeout para não travar a interface
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 5000);
-            
-            try {
-                const response = await fetch(GOOGLE_SHEETS_API, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(dataToSend),
-                    signal: controller.signal
-                });
-                
-                clearTimeout(timeoutId);
-                return response.ok;
-            } catch (fetchError) {
-                clearTimeout(timeoutId);
-                return false; // Silenciosamente falha
+
+            // Enviar para o Google Sheets
+            const response = await fetch(GOOGLE_SHEETS_API, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dataToSend)
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log('Resultado salvo na planilha:', result);
+                return true;
+            } else {
+                console.error('Erro ao salvar na planilha:', response.status);
+                return false;
             }
         } catch (error) {
-            return false; // Silenciosamente falha
+            console.error('Erro ao conectar com o Google Sheets:', error);
+            return false;
         }
     }
 
@@ -1446,10 +1443,10 @@
             ganhouBrinde: score === totalQuestions
         };
 
-        // Salvar na planilha sem mostrar para o usuário
-        saveToGoogleSheets(resultData).then(success => {
-            // Não mostra nenhuma mensagem ao usuário
-            console.log('Resultado salvo na planilha:', success ? 'Sucesso' : 'Falha silenciosa');
+        // Salvar na planilha (sem mostrar mensagens)
+        saveResultToSheets(resultData).catch(error => {
+            console.error('Erro ao salvar resultado:', error);
+            // Não mostra erro para o usuário
         });
         
         showQuestionReview();
@@ -1513,10 +1510,19 @@
         }
     });
 
-    // Carregar ao iniciar
+    // Testar conexão ao carregar
     window.addEventListener('load', () => {
         console.log(`Quiz UNIFOR carregado com ${questions.length} questões disponíveis.`);
-        console.log('Sistema configurado para salvar resultados automaticamente na planilha.');
+        
+        // Testar conexão com Google Sheets
+        fetch(GOOGLE_SHEETS_API)
+            .then(response => response.json())
+            .then(data => {
+                console.log('✅ Conexão com Google Sheets: OK', data);
+            })
+            .catch(error => {
+                console.warn('⚠️ Não foi possível conectar com Google Sheets:', error);
+            });
     });
   </script>
 </body>
